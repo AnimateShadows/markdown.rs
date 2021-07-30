@@ -2,11 +2,11 @@
 
 This was a way for me to learn more about Rust ~~because I didn't know enough~~.
 
-This is based on the [https://commonmark.org](CommonMark) MarkDown specifications.
+This is based on the [CommonMark](https://commonmark.org) MarkDown specifications.
 
 ## Reference
 
-Go and read the [https://commonmark.org/help/](CommonMark reference) because it is impossible (or so I think) to put a bullet point in a table.
+Go and read the [CommonMark reference](https://commonmark.org/help/) because it is impossible (or so I think) to put a bullet point in a table.
 
 ## TODO
 
