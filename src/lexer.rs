@@ -55,7 +55,6 @@ fn read_bare(stream: &mut Stream, start: String) -> String {
         let peek: String = stream.peek(1);
         let shifted: String = stream.shift();
         if shifted == "" {
-            println!("uwu?");
             break;
         }
         ret = format!("{}{}", ret, shifted);
