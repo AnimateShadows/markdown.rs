@@ -48,6 +48,24 @@ fn read_until(stream: &mut Stream, identifier: &str) -> String {
     ret
 }
 
+fn read_bare(stream: &mut Stream, start: String) -> String {
+    let mut ret: String = start.clone();
+
+    loop {
+        let peek: String = stream.peek(1);
+        let shifted: String = stream.shift();
+        if shifted == "" {
+            println!("uwu?");
+            break;
+        }
+        ret = format!("{}{}", ret, shifted);
+        if peek == "*" {
+            break;
+        }
+    }
+    ret
+}
+
 pub fn lex(data: String) {
     let mut stream: Stream = Stream::new(data);
     let mut tokens: Vec<token::Token> = Vec::new();
@@ -63,7 +81,10 @@ pub fn lex(data: String) {
                 token::TokenType::Italic,
             ))
         } else {
-            tokens.push(token::Token::new(shifted, token::TokenType::Text))
+            tokens.push(token::Token::new(
+                read_bare(&mut stream, shifted),
+                token::TokenType::Text,
+            ))
         }
     }
 
