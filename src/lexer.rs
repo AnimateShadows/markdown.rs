@@ -36,16 +36,26 @@ impl Stream {
     }
 }
 
-fn read_until(stream: &mut Stream, identifier: &str) -> String {
+fn read_until(stream: &mut Stream, identifier: &str, limit: usize) -> String {
     let mut ret: String = String::from("");
+    let mut times: usize = 0;
+    for _i in 0..limit - 1 {
+        let _ = stream.shift();
+    }
     loop {
         let shifted: String = stream.shift();
         if shifted == identifier {
+            times += 1;
+        }
+        if times >= limit {
             break;
         }
-        ret = format!("{}{}", ret, shifted);
+        if shifted == "" {
+            break;
+        }
+        ret = format!("{}{}", ret, shifted)
     }
-    ret
+    String::from(&ret[..ret.len() - (limit - 1)])
 }
 
 fn read_bare(stream: &mut Stream, start: String) -> String {
@@ -53,14 +63,14 @@ fn read_bare(stream: &mut Stream, start: String) -> String {
 
     loop {
         let peek: String = stream.peek(1);
+        if peek == "*" || peek == "_" {
+            break;
+        }
         let shifted: String = stream.shift();
         if shifted == "" {
             break;
         }
         ret = format!("{}{}", ret, shifted);
-        if peek == "*" {
-            break;
-        }
     }
     ret
 }
@@ -69,16 +79,24 @@ pub fn lex(data: String) {
     let mut stream: Stream = Stream::new(data);
     let mut tokens: Vec<token::Token> = Vec::new();
     loop {
+        let peek = stream.peek(1);
         let shifted: String = stream.shift();
         if shifted == "" {
             break;
         }
 
-        if shifted == "*" {
-            tokens.push(token::Token::new(
-                read_until(&mut stream, "*"),
-                token::TokenType::Italic,
-            ))
+        if shifted == "*" || shifted == "_" {
+            if peek == shifted {
+                tokens.push(token::Token::new(
+                    read_until(&mut stream, &shifted.to_owned(), 2),
+                    token::TokenType::Bold,
+                ))
+            } else {
+                tokens.push(token::Token::new(
+                    read_until(&mut stream, &shifted.to_owned(), 1),
+                    token::TokenType::Italic,
+                ))
+            }
         } else {
             tokens.push(token::Token::new(
                 read_bare(&mut stream, shifted),

@@ -2,13 +2,17 @@ use std::fmt;
 
 #[allow(dead_code)]
 pub enum TokenType {
+    Text,
     Bold,
     Italic,
-    Strikethrough,
-    Underline,
     BulletPointItem,
     NumberedListItem,
-    Text,
+    HyperLink,
+    HyperLinkImage,
+    BlockQuote,
+    HorizontalLine,
+    CodeBlock,
+    InlineCode,
 }
 
 impl fmt::Display for TokenType {
@@ -16,11 +20,15 @@ impl fmt::Display for TokenType {
         let name: &str = match self {
             Self::Bold => "Bold",
             Self::Italic => "Italic",
-            Self::Strikethrough => "StrikeThrough",
-            Self::Underline => "Underline",
             Self::BulletPointItem => "BulletPointItem",
             Self::NumberedListItem => "NumberedListItem",
             Self::Text => "Text",
+            Self::HyperLink => "HyperLink",
+            Self::HyperLinkImage => "HyperLinkImage",
+            Self::BlockQuote => "BlockQuote",
+            Self::CodeBlock => "CodeBlock",
+            Self::HorizontalLine => "HorizontalLine",
+            Self::InlineCode => "InlineCode",
         };
         write!(f, "TokenType<{}>", name)
     }
