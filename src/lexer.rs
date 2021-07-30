@@ -60,17 +60,21 @@ fn read_until(stream: &mut Stream, identifier: &str, limit: usize) -> String {
 
 fn read_bare(stream: &mut Stream, start: String) -> String {
     let mut ret: String = start.clone();
+    let peek = stream.peek(1);
+    if peek == "*" || peek == "_" {
+        return ret;
+    }
 
     loop {
         let peek: String = stream.peek(1);
-        if peek == "*" || peek == "_" {
-            break;
-        }
         let shifted: String = stream.shift();
         if shifted == "" {
             break;
         }
         ret = format!("{}{}", ret, shifted);
+        if peek == "*" || peek == "_" {
+            break;
+        }
     }
     ret
 }
