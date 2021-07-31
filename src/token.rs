@@ -17,13 +17,13 @@ pub enum TokenType {
 
 #[allow(dead_code)]
 impl TokenType {
-    fn to_html_tag(&self) -> (String, bool) {
+    pub fn to_html_tag(&self) -> (String, bool) {
         let tag: (String, bool) = match self {
             Self::Bold => (String::from("strong"), true),
             Self::Italic => (String::from("em"), true),
             Self::BulletPointItem => (String::from("li"), true),
             Self::NumberedListItem => (String::from("li"), true),
-            Self::Text => (String::from("p"), true),
+            Self::Text => (String::from(""), true),
             Self::BlockQuote => (String::from("blockquote"), true),
             Self::CodeBlock => (String::from("pre"), true),
             Self::HorizontalLine => (String::from("hr"), false),
@@ -56,8 +56,8 @@ impl fmt::Display for TokenType {
 
 #[allow(dead_code)]
 pub struct Token {
-    content: String,
-    type_: TokenType,
+    pub content: String,
+    pub type_: TokenType,
 }
 
 impl Token {

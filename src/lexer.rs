@@ -94,7 +94,6 @@ pub fn lex(data: String) -> Vec<Token> {
         if shifted == "" {
             break;
         }
-        println!("shifted {}", shifted);
 
         if shifted == "*" || shifted == "_" {
             if peek == shifted {
