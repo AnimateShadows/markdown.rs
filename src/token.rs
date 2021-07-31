@@ -15,6 +15,28 @@ pub enum TokenType {
     InlineCode,
 }
 
+impl TokenType {
+    fn to_html_tag(&self) -> (String, bool) {
+        let tag: (&str, bool) = match self {
+            Self::Bold => ("strong", true),
+            Self::Italic => ("em", true),
+            Self::BulletPointItem => ("li", true),
+            Self::NumberedListItem => ("li", true),
+            Self::Text => ("p", true),
+            Self::BlockQuote => ("blockquote", true),
+            Self::CodeBlock => ("pre", true),
+            Self::HorizontalLine => ("hr", false),
+            Self::InlineCode => ("code", true),
+            Self::HyperLinkImage => ("img src=\"{url}\" alt=\"{alt}\"", false),
+            Self::HyperLink => ("a href=\"{url}\"", false)
+        };
+        tag.
+        
+        //tag.0 = String::from(tag.0);
+
+    }
+}
+
 impl fmt::Display for TokenType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let name: &str = match self {
