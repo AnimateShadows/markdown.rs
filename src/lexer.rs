@@ -78,14 +78,14 @@ fn read_bare(stream: &mut Stream, start: String) -> String {
             break;
         }
         ret = format!("{}{}", ret, shifted);
-        if peek == "*" || peek == "_" {
+        if is_reserved_char(peek) {
             break;
         }
     }
     ret
 }
 
-pub fn lex(data: String) {
+pub fn lex(data: String) -> Vec<Token> {
     let mut stream: Stream = Stream::new(data);
     let mut tokens: Vec<Token> = Vec::new();
     loop {
@@ -94,6 +94,7 @@ pub fn lex(data: String) {
         if shifted == "" {
             break;
         }
+        println!("shifted {}", shifted);
 
         if shifted == "*" || shifted == "_" {
             if peek == shifted {
@@ -123,8 +124,5 @@ pub fn lex(data: String) {
             tokens.push(Token::new(read_bare(&mut stream, shifted), TokenType::Text));
         }
     }
-
-    for t in tokens.iter() {
-        print!("{} ", t);
-    }
+    tokens
 }
