@@ -17,8 +17,8 @@ Go and read the [CommonMark reference](https://commonmark.org/help/) because it 
     - [ ] Ordered lists
     - [ ] Horizontal rule
     - [ ] Blockquotes
-    - [ ] Codeblocks
-    - [ ] Inline code
+    - [x] Codeblocks
+    - [x] Inline code
     - [ ] Embedded links
     - [ ] Images
     - [ ] Escapes e.g. "\\\*" to escape the "\*" character which otherwise would be interpreted as the opening of a sequence of italic or bold text.

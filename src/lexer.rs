@@ -36,8 +36,13 @@ impl Stream {
     }
 }
 
+fn is_reserved_char(character: String) -> bool {
+    character == "*" || character == "_" || character == "`"
+}
+
 fn read_until(stream: &mut Stream, identifier: &str, limit: usize) -> String {
     let mut ret: String = String::from("");
+
     let mut times: usize = 0;
     for _i in 0..limit - 1 {
         let _ = stream.shift();
@@ -46,6 +51,8 @@ fn read_until(stream: &mut Stream, identifier: &str, limit: usize) -> String {
         let shifted: String = stream.shift();
         if shifted == identifier {
             times += 1;
+        } else {
+            times = 0;
         }
         if times >= limit {
             break;
@@ -60,8 +67,7 @@ fn read_until(stream: &mut Stream, identifier: &str, limit: usize) -> String {
 
 fn read_bare(stream: &mut Stream, start: String) -> String {
     let mut ret: String = start.clone();
-    let peek = stream.peek(1);
-    if peek == "*" || peek == "_" {
+    if is_reserved_char(stream.peek(1)) || is_reserved_char(stream.peek(0)) {
         return ret;
     }
 
@@ -94,18 +100,30 @@ pub fn lex(data: String) {
                 tokens.push(token::Token::new(
                     read_until(&mut stream, &shifted.to_owned(), 2),
                     token::TokenType::Bold,
-                ))
+                ));
             } else {
                 tokens.push(token::Token::new(
                     read_until(&mut stream, &shifted.to_owned(), 1),
                     token::TokenType::Italic,
-                ))
+                ));
+            }
+        } else if shifted == "`" {
+            if peek == shifted && stream.peek(1) == shifted {
+                tokens.push(token::Token::new(
+                    read_until(&mut stream, "`", 3),
+                    token::TokenType::CodeBlock,
+                ));
+            } else {
+                tokens.push(token::Token::new(
+                    read_until(&mut stream, "`", 1),
+                    token::TokenType::InlineCode,
+                ));
             }
         } else {
             tokens.push(token::Token::new(
                 read_bare(&mut stream, shifted),
                 token::TokenType::Text,
-            ))
+            ));
         }
     }
 
