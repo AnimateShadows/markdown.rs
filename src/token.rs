@@ -15,25 +15,23 @@ pub enum TokenType {
     InlineCode,
 }
 
+#[allow(dead_code)]
 impl TokenType {
     fn to_html_tag(&self) -> (String, bool) {
-        let tag: (&str, bool) = match self {
-            Self::Bold => ("strong", true),
-            Self::Italic => ("em", true),
-            Self::BulletPointItem => ("li", true),
-            Self::NumberedListItem => ("li", true),
-            Self::Text => ("p", true),
-            Self::BlockQuote => ("blockquote", true),
-            Self::CodeBlock => ("pre", true),
-            Self::HorizontalLine => ("hr", false),
-            Self::InlineCode => ("code", true),
-            Self::HyperLinkImage => ("img src=\"{url}\" alt=\"{alt}\"", false),
-            Self::HyperLink => ("a href=\"{url}\"", false)
+        let tag: (String, bool) = match self {
+            Self::Bold => (String::from("strong"), true),
+            Self::Italic => (String::from("em"), true),
+            Self::BulletPointItem => (String::from("li"), true),
+            Self::NumberedListItem => (String::from("li"), true),
+            Self::Text => (String::from("p"), true),
+            Self::BlockQuote => (String::from("blockquote"), true),
+            Self::CodeBlock => (String::from("pre"), true),
+            Self::HorizontalLine => (String::from("hr"), false),
+            Self::InlineCode => (String::from("code"), true),
+            Self::HyperLinkImage => (String::from("img src=\"{url}\" alt=\"{alt}\""), false),
+            Self::HyperLink => (String::from("a href=\"{url}\""), false),
         };
-        tag.
-        
-        //tag.0 = String::from(tag.0);
-
+        tag
     }
 }
 
