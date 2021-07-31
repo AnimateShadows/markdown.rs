@@ -1,3 +1,4 @@
+use std::fs;
 use text_io::read;
 mod lexer;
 mod token;
@@ -7,4 +8,9 @@ fn main() {
     let s: String = read!("{}\u{0004}");
     lexer::lex(s);
     println!("\nEnded!");
+    
+    let template =
+        fs::read_to_string("assets/template.html").expect("Something went wrong reading the file");
+    
+    // template.replace("{html}", {The html we make})
 }

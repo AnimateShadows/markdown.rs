@@ -120,10 +120,7 @@ pub fn lex(data: String) {
                 ));
             }
         } else {
-            tokens.push(Token::new(
-                read_bare(&mut stream, shifted),
-                TokenType::Text,
-            ));
+            tokens.push(Token::new(read_bare(&mut stream, shifted), TokenType::Text));
         }
     }
 
