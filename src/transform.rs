@@ -1,4 +1,4 @@
-use crate::token::Token;
+use crate::token::{Token, TokenType};
 
 fn extract_whitespace(string: &String) -> String {
     let mut ret = String::new();
@@ -15,7 +15,10 @@ pub fn transform(tokens: Vec<Token>) -> String {
     for token in tokens.iter() {
         let tag = token.type_.to_html_tag();
         if extract_whitespace(&token.content).is_empty() {
-            continue;
+            match token.type_ {
+                TokenType::Text => { /* do nothing */ },
+                _ => {continue;}
+            }
         }
 
         if &tag.0 == &String::from("") {
