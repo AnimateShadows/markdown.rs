@@ -1,4 +1,3 @@
-use crate::lexer::lex;
 use crate::token::Token;
 
 fn extract_whitespace(string: &String) -> String {
@@ -32,6 +31,5 @@ pub fn transform(tokens: Vec<Token>) -> String {
             );
         }
     }
-    println!("<p>{}</p>", ret);
     ret
 }

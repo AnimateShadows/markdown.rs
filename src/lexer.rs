@@ -85,7 +85,7 @@ fn read_bare(stream: &mut Stream, start: String) -> String {
     ret
 }
 
-pub fn lex(data: String) -> Vec<Token> {
+pub fn tokenise(data: String, include_headers: bool) -> Vec<Token> {
     let mut stream: Stream = Stream::new(data);
     let mut tokens: Vec<Token> = Vec::new();
     loop {
@@ -94,34 +94,46 @@ pub fn lex(data: String) -> Vec<Token> {
         if shifted == "" {
             break;
         }
+        let s: &str = &shifted;
 
-        if shifted == "*" || shifted == "_" {
-            if peek == shifted {
+        match s {
+            "*" | "_" if peek == shifted => {
                 tokens.push(Token::new(
                     read_until(&mut stream, &shifted.to_owned(), 2),
                     TokenType::Bold,
                 ));
-            } else {
+            }
+            "*" | "_" => {
                 tokens.push(Token::new(
                     read_until(&mut stream, &shifted.to_owned(), 1),
                     TokenType::Italic,
                 ));
             }
-        } else if shifted == "`" {
-            if peek == shifted && stream.peek(1) == shifted {
+            "`" if peek == shifted && stream.peek(1) == shifted => {
                 tokens.push(Token::new(
                     read_until(&mut stream, "`", 3),
                     TokenType::CodeBlock,
                 ));
-            } else {
+            }
+            "`" => {
                 tokens.push(Token::new(
                     read_until(&mut stream, "`", 1),
                     TokenType::InlineCode,
                 ));
             }
-        } else {
-            tokens.push(Token::new(read_bare(&mut stream, shifted), TokenType::Text));
-        }
+            _ => {
+                tokens.push(Token::new(read_bare(&mut stream, shifted), TokenType::Text));
+            }
+        };
     }
     tokens
+}
+
+macro_rules! lex {
+    ( $data:expr ) => {
+        lexer::tokenise($data, false)
+    };
+    ( $data:expr, headers: true) => {
+        lexer::tokenise($data, true)
+    };
 }
